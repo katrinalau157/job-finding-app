@@ -1,0 +1,119 @@
+{
+  "project_info": {
+    "project_number": "599995622661",
+    "firebase_url": "https://v2db-e11d0.firebaseio.com",
+    "project_id": "v2db-e11d0",
+    "storage_bucket": "v2db-e11d0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599995622661:android:8585430a6e7744c0c9036c",
+        "android_client_info": {
+          "package_name": "com.example.app717v2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "599995622661-k5bfigs7eupujvrbuenpvvqbrf6j9khv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXC9BCpXXVcsSoWjVzYJZX7K0VlHs7bqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "599995622661-k5bfigs7eupujvrbuenpvvqbrf6j9khv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "599995622661-i1dqs0k9vf64pl1hn3dt8c0phmgc7t9d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.jobappv4"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599995622661:android:31eaf5b788773f92c9036c",
+        "android_client_info": {
+          "package_name": "com.example.appnewv1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "599995622661-k5bfigs7eupujvrbuenpvvqbrf6j9khv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXC9BCpXXVcsSoWjVzYJZX7K0VlHs7bqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "599995622661-k5bfigs7eupujvrbuenpvvqbrf6j9khv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "599995622661-i1dqs0k9vf64pl1hn3dt8c0phmgc7t9d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.jobappv4"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599995622661:android:efacac85b7b7d9e6c9036c",
+        "android_client_info": {
+          "package_name": "com.example.jobappv4"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "599995622661-k5bfigs7eupujvrbuenpvvqbrf6j9khv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXC9BCpXXVcsSoWjVzYJZX7K0VlHs7bqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "599995622661-k5bfigs7eupujvrbuenpvvqbrf6j9khv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "599995622661-i1dqs0k9vf64pl1hn3dt8c0phmgc7t9d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.jobappv4"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
