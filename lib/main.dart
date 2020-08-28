@@ -25,10 +25,11 @@ import 'package:appnewv1/screen_B/B_MainPage.dart';
 import 'package:appnewv1/screen_B/B_PostJob_form.dart';
 import 'package:appnewv1/screen_B/B_PostMission_form.dart';
 import 'package:appnewv1/screen_B/B_appSetting.dart';
+import 'package:appnewv1/screen_B/B_justforfun.dart';
 
 //per
 import 'helpers/authenticate.dart';
-
+import 'package:appnewv1/problem.dart';
 
 void main() {
   runApp(MyApp());
@@ -62,7 +63,7 @@ class _MyAppState extends State<MyApp> {
     //loginPageTag: (context) => LoginPage(),
     HomePageTag: (context) => HomePage(),
     B_2ndPageTag: (context) => B_2ndPage(),
-    //JustForFunTag: (context) => Justforfun(),
+    JustForFunTag: (context) => Justforfun(),
     C_MainPageTag: (context) => C_MainPage(),
     B_MainPageTag: (context) => B_MainPage(),
     B_PostMission_formTag: (context) => B_PostMission_form(),
@@ -75,6 +76,7 @@ class _MyAppState extends State<MyApp> {
     C_emailSigninTag: (context) => Authenticate(),
     C_emailSignupTag: (context) => Authenticate(),
     ChatRoom_tryTag: (context) => ChatRoom_try(),
+    problem_pageTag: (context) => problem_page(),
     //ConversationScreenTag: (context) => ConversationScreen(),
   };
 

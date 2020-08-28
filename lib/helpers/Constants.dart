@@ -1,3 +1,4 @@
+import 'package:appnewv1/problem.dart';
 import 'package:flutter/material.dart';
 
 // Colors
@@ -10,6 +11,8 @@ Color appBlackColor = Colors.black;
 Color appGreenBlueColor = Color.fromRGBO(10, 85, 111, 1);
 Color appMintColor = Color.fromRGBO(180, 241, 234, 1);
 Color  job_location_color =Color.fromRGBO(0, 172, 226, 1);
+Color applightGreyColor = Color.fromRGBO(232, 225, 224, 1);
+Color applightpinkColor = Color.fromRGBO(255,219,207, 1);
 
 // Strings
 const appTitle = "公司職缺";
@@ -32,5 +35,8 @@ const C_emailSignupTag = 'C_emailSignup Page';
 const C_emailSigninTag = 'C_emailSignin Page';
 const ChatRoom_tryTag = 'ChatRoom_try Page';
 const ConversationScreenTag = 'ConversationScreen Page';
+const problem_pageTag = 'problem_page Page';
 
-Set<String> saved = new Set<String>();
+List savedJoblist = [];
+List saved = [];
+List globalJobList = [];

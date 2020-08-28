@@ -19,7 +19,7 @@ class B_appSetting extends StatefulWidget {
 
 class _B_appSettingState extends State<B_appSetting> {
   String fbIcon;
-  String username;
+  String username = "";
 
   AuthService authService = new AuthService();
   dynamic _userData;
@@ -117,7 +117,7 @@ class _B_appSettingState extends State<B_appSetting> {
                     divider_1(),
                     switch_list("切換成打工模式 ", Icons.swap_horiz),
                     divider_1(),
-                    list_smt("問題回報與申訴 ", Icons.headset_mic),
+                    list_problem("問題回報與申訴 ", Icons.headset_mic),
                     divider_1(),
                     list_smt("合作提案 ", Icons.palette),
                     divider_1(),
@@ -144,7 +144,21 @@ class _B_appSettingState extends State<B_appSetting> {
                   ]),
             )));
   }
-
+  Widget list_problem(String title, IconData a) {
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
+      leading: Icon(
+        a,
+        color: appGreyColor,
+      ),
+      title:
+      Text(title, style: TextStyle(color: appDeepBlueColor, fontSize: 15)),
+      dense: true,
+      onTap: (){
+        Navigator.of(context).pushNamed(problem_pageTag);
+      },
+    );
+  }
   Widget profile_list() {
     return (userIsLoggedIn != null && userIsLoggedIn == true)
         ? ListTile(

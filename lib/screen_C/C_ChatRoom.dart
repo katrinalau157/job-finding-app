@@ -118,24 +118,24 @@ class _ChatRoom_tryState extends State<ChatRoom_try> {
     )
         : Scaffold(
       body: Container(
+
         color: Colors.white,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              new Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 1000.0),
-              ),
-              Text("Please Login first",
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      height: 1.5,
-                      color: appDeepBlueColor,
-                      fontWeight: FontWeight.bold)),
-              new Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5.0),
-              ),
-            ]),
+        child: Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+            Image.asset(
+              'assets/images/icons/pignojob.png',
+              width: double.infinity,
+            ),
+            Text(
+              "Please Login First",
+              style:
+              TextStyle(color: applightGreyColor, fontSize: 18),
+            )
+          ]),
+        ),
       ),
     );
   }

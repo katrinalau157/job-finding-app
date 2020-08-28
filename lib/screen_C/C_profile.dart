@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:appnewv1/helpers/Constants.dart';
+import 'package:image_picker/image_picker.dart';
 
 const double TextField_title_fontsize = 15;
 const double TextField_hint_fontsize = 14;
@@ -14,6 +16,8 @@ TextEditingController _c_schoolNameController = TextEditingController();
 TextEditingController _c_MajorController = TextEditingController();
 
 int selectedindex;
+PickedFile imageFile;
+final ImagePicker _picker = ImagePicker();
 
 clearTextInput() {
   _c_nameController.clear();
@@ -81,13 +85,23 @@ class _C_profileState extends State<C_profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            elevation: 0.1,
-            backgroundColor: appBlueColor,
-            title: Text(
-              "刊登職缺",
-              style: TextStyle(fontSize: 20.0, color: appDeepBlueColor),
-            )),
+        appBar:
+//        AppBar(
+//            elevation: 0.1,
+//            backgroundColor: appBlueColor,
+//            title: Text(
+//              "Profile",
+//              style: TextStyle(fontSize: 20.0, color: appDeepBlueColor),
+//            )),
+
+        AppBar(
+          backgroundColor: appBlueColor,
+            leading: new IconButton(
+                icon: new Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop()),title: Text(
+          "Profile",
+          style: TextStyle(fontSize: 20.0, color: appDeepBlueColor),
+        ),),
         body: Padding(
             padding: const EdgeInsets.all(20.0),
             child: SingleChildScrollView(
@@ -96,12 +110,8 @@ class _C_profileState extends State<C_profile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Center(
-                      child: Image.asset(
-                        'assets/images/icons/profile_icon.png',
-                        width: MediaQuery.of(context).size.width / 2,
-                      ),
-                    ),
+
+                    imageProfile(),
                     //1
                     txtfieldtitle("姓名"),
                     textformfield(_c_nameController, "陳小豬",
@@ -156,12 +166,12 @@ class _C_profileState extends State<C_profile> {
                             print(_c_phoneNoController.text);
                             print(_c_schoolNameController.text);
                             print(_c_MajorController.text);
-                            _formKey.currentState.reset();
-                            clearTextInput();
+                            //_formKey.currentState.reset();
+                            //clearTextInput();
                             Navigator.pop(context);
                           }
                         },
-                        child: Text('Submit'),
+                        child: Text('Save'),
                       ),
                     ),
                     Padding(
@@ -178,5 +188,93 @@ class _C_profileState extends State<C_profile> {
                 ),
               ),
             )));
+  }
+
+  Widget imageProfile() {
+    return Center(
+      child: Stack(children: <Widget>[
+        CircleAvatar(
+          radius: MediaQuery.of(context).size.width / 4,
+          backgroundImage: imageFile == null
+              ? AssetImage("assets/images/icons/profile_icon.png")
+              : FileImage(File(imageFile.path)),
+        ),
+        Positioned(
+          bottom: 20.0,
+          right: 20.0,
+          child: InkWell(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                builder: ((builder) => bottomSheet()),
+              );
+            },
+            child: Icon(
+              Icons.camera_alt,
+              color: Colors.teal,
+              size: 28.0,
+            ),
+          ),
+        ),
+      ]),
+    );
+  }
+
+  Widget bottomSheet() {
+    return Container(
+      height: MediaQuery.of(context).size.width/2,
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(
+        children: <Widget>[
+          Text(
+            "Choose Profile photo",
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            FlatButton.icon(
+              icon: Icon(Icons.add_a_photo),
+              onPressed: () {
+                takePhoto(ImageSource.camera);
+              },
+              label: Text("Camera"),
+            ),
+            FlatButton.icon(
+              icon: Icon(Icons.add_photo_alternate),
+              onPressed: () {
+                takePhoto(ImageSource.gallery);
+              },
+              label: Text("Gallery"),
+            ),
+          ]),
+          FlatButton.icon(
+            icon: Icon(Icons.remove),
+            onPressed: () {
+              setState(() {
+                imageFile = null;
+              });
+            },
+            label: Text("Remove Icon Image"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void takePhoto(ImageSource source) async {
+    final pickedFile = await _picker.getImage(
+      source: source,
+    );
+    setState(() {
+      imageFile = pickedFile;
+    });
   }
 }

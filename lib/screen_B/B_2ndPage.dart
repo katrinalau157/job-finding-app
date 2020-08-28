@@ -131,7 +131,9 @@ class B_2ndPage extends StatelessWidget {
       minWidth: MediaQuery.of(context).size.width / 3,
       height: MediaQuery.of(context).size.height / 7.7,
       child: RaisedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushNamed(JustForFunTag);
+        },
         color: Colors.white,
         elevation: 3,
         padding: const EdgeInsets.all(13.0),

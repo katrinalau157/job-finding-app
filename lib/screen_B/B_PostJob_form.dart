@@ -1,5 +1,6 @@
 import 'dart:convert';
-
+import 'package:appnewv1/helpers/constants_login.dart';
+import 'package:appnewv1/screen_B/B_MainPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_maps_webservice/places.dart';
@@ -7,22 +8,16 @@ import 'package:appnewv1/helpers/Constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:appnewv1/helpers/helperfunctions.dart';
 
+import 'package:database/database.dart' hide Column;
+import 'package:database/sql.dart';
+import 'package:database_adapter_postgre/database_adapter_postgre.dart';
+
 const double TextField_title_fontsize = 15;
 const double TextField_hint_fontsize = 14;
 double lat;
 double lng;
 const String kGoogleApiKey = "AIzaSyATL0Ar3NLs5umBrgIpkvYMkzM_E2zW5pI";
 GoogleMapsPlaces places = GoogleMapsPlaces(apiKey: kGoogleApiKey);
-
-/*
-TextEditingController _cnameController = TextEditingController();
-TextEditingController _jobtitleController = TextEditingController();
-TextEditingController _jobtypeController = TextEditingController();
-
-TextEditingController _job_dtlController = TextEditingController();
-TextEditingController _job_salary1Controller = TextEditingController();
-TextEditingController _job_locateController = TextEditingController();
-*/
 
 TextEditingController company_nameController = TextEditingController();
 TextEditingController job_titleController = TextEditingController();
@@ -36,7 +31,7 @@ List a = ['時薪', '日薪', '月薪'];
 List<bool> isSelected = List.generate(3, (_) => false);
 String str_salary1;
 int selectedindex;
-
+String username_db ="";
 clearTextInput() {
   company_nameController.clear();
   job_titleController.clear();
@@ -63,7 +58,9 @@ class _B_PostJob_formState extends State<B_PostJob_form> {
   void initState() {
     clearTextInput();
     getEmailInState();
+    getUserInfo();
   }
+
   String email;
   getEmailInState() async {
     await HelperFunctions.getUserEmailSharedPreference().then((value) {
@@ -71,6 +68,12 @@ class _B_PostJob_formState extends State<B_PostJob_form> {
         email = value;
       });
     });
+  }
+
+
+  getUserInfo() async {
+    Constants.myName = await HelperFunctions.getUserNameSharedPreference();
+    username_db = Constants.myName;
   }
 
   Widget textformfield(TextEditingController textcontroller, String hinttxt,
@@ -99,17 +102,6 @@ class _B_PostJob_formState extends State<B_PostJob_form> {
   Widget textformfield_place(TextEditingController textcontroller,
       String hinttxt, String validator_str) {
     return TextFormField(
-/*
-      onTap: () async {
-        // should show search screen here
-        showSearch(
-          context: context,
-          // we haven't created AddressSearch class
-          // this should be extending SearchDelegate
-          delegate: AddressSearch(),
-        );
-      },
-*/
       onTap: () async {
         buttonPressed(context, true);
       },
@@ -164,7 +156,7 @@ class _B_PostJob_formState extends State<B_PostJob_form> {
             style: TextStyle(
               color: appDeepBlueColor,
               fontSize:
-              TextField_title_fontsize, //You can set your custom height here
+                  TextField_title_fontsize, //You can set your custom height here
             )),
       ),
     );
@@ -201,16 +193,87 @@ class _B_PostJob_formState extends State<B_PostJob_form> {
     );
   }
 
+  String dropdownValue = '人力';
+
+  Widget dropdown() {
+    return DropdownButton<String>(
+        value: dropdownValue,
+        isExpanded: true,
+        hint: Text("選擇打工類型"),
+        onChanged: (String newValue) {
+          setState(() {
+            dropdownValue = newValue;
+            print(dropdownValue);
+          });
+        },
+        items: <String>['人力', '餐飲', '門市', '辦工', '銷售', '補教', '活動','市調','其他']
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList());
+  }
+  String dropdownValue_location = '新界區';
+  Widget dropdown_location() {
+    return DropdownButton<String>(
+        value: dropdownValue_location,
+        isExpanded: true,
+        hint: Text("選擇打工類型"),
+        onChanged: (String newValue) {
+          setState(() {
+            dropdownValue_location = newValue;
+            print(dropdownValue_location);
+          });
+        },
+        items: <String>['新界區', '九龍區', '港島區', '離島區']
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+
+            child: Text(value),
+          );
+        }).toList());
+  }
+
+
+  String dropdownValue_time = '朝早-夜晚 ( 06:00 - 18:00 )';
+  Widget dropdown_time() {
+    return DropdownButton<String>(
+        value: dropdownValue_time,
+        isExpanded: true,
+        hint: Text("選擇打工類型"),
+        onChanged: (String newValue) {
+          setState(() {
+            dropdownValue_time = newValue;
+            print(dropdownValue_time);
+          });
+        },
+        items: <String>['朝早-夜晚 ( 06:00 - 18:00 )', '晏晝-凌晨 ( 12:00 - 00:00 )','凌晨 ( 00:00 - 06:00 )']
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList());
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            elevation: 0.1,
             backgroundColor: appBlueColor,
+            leading: new IconButton(
+              icon: new Icon(Icons.arrow_back),
+              onPressed: () {
+                gotopage1_B();
+                Navigator.pushReplacementNamed(context, B_MainPageTag);
+              },
+            ),
             title: Text(
               "刊登職缺",
               style: TextStyle(fontSize: 20.0, color: appDeepBlueColor),
             )),
+
         body: Padding(
             padding: const EdgeInsets.all(20.0),
             child: SingleChildScrollView(
@@ -225,6 +288,7 @@ class _B_PostJob_formState extends State<B_PostJob_form> {
                         'Please enter some text'),
                     _space(),
                     _space(),
+
                     //2
                     txtfieldtitle("標題"),
                     textformfield(job_titleController, "例 : 知名餐廳誠徵晚班工讀生",
@@ -233,10 +297,23 @@ class _B_PostJob_formState extends State<B_PostJob_form> {
                     _space(),
                     //3
                     txtfieldtitle("打工類型"),
-                    textformfield(
-                        job_typeController, "選擇打工類型", 'Please enter some text'),
+                    dropdown(),
                     _space(),
                     _space(),
+
+                    txtfieldtitle("打工區域"),
+                    dropdown_location(),
+                    _space(),
+                    _space(),
+
+                    txtfieldtitle("打工時間"),
+                    dropdown_time(),
+                    _space(),
+                    _space(),
+
+//                    textformfield(
+//                        job_typeController, "選擇打工類型", 'Please enter some text'),
+
                     //4
                     txtfieldtitle("打工內容"),
                     textformfield_multi(
@@ -257,8 +334,8 @@ class _B_PostJob_formState extends State<B_PostJob_form> {
                         onPressed: (int index) {
                           setState(() {
                             for (int buttonIndex = 0;
-                            buttonIndex < isSelected.length;
-                            buttonIndex++) {
+                                buttonIndex < isSelected.length;
+                                buttonIndex++) {
                               if (buttonIndex == index) {
                                 isSelected[buttonIndex] = true;
                                 str_salary1 = a[buttonIndex];
@@ -304,8 +381,19 @@ class _B_PostJob_formState extends State<B_PostJob_form> {
                             print(job_salaryController.text.trim());
                             print(job_locationController.text.trim());
                             print(DateTime.now().millisecondsSinceEpoch);
-
-                            Firestore.instance
+/*                            if (dropdownValue_location=='新界區'){
+                              dropdownValue_location="新界區";
+                            }
+                            if (dropdownValue_location=='九龍區'){
+                              dropdownValue_location="九龍區";
+                            }
+                            if (dropdownValue_location=='港島區'){
+                              dropdownValue_location="港島區";
+                            }
+                            if (dropdownValue_location=='離島區'){
+                              dropdownValue_location="離島區";
+                            }*/
+/*                            Firestore.instance
                                 .collection('JobPost')
                                 .document()
                                 .setData({
@@ -322,11 +410,40 @@ class _B_PostJob_formState extends State<B_PostJob_form> {
                               'lat': lat,
                               'lng': lng,
                               'email': email
-                            });
+                            });*/
 
+                            String company_name =
+                                company_nameController.text.trim();
+                            String job_title = job_titleController.text.trim();
+                            String job_type = job_typeController.text.trim();
+                            String job_detail = job_detailController.text;
+                            String job_salary_type = str_salary1;
+                            String job_salary =
+                                job_salaryController.text.trim();
+                            String job_location =
+                                job_locationController.text.trim();
+                            int time = DateTime.now().millisecondsSinceEpoch;
+
+                            print(username_db);
+                            final config = Postgre(
+                              host: 'localhost',
+                              port: 5432,
+                              user: 'your username',
+                              password: 'your password',
+                              databaseName: 'example',
+                            );
+
+                            final sqlClient = config.database().sqlClient;
+
+                            String sqlquery =
+                                "INSERT INTO jobposts(company_name, job_title, job_type, job_detail, job_salary_type, job_salary, job_location, time, email, lat, lng, area, timerange,username)VALUES('$company_name','$job_title','$dropdownValue','$job_detail','$job_salary_type','$job_salary','$job_location',$time,'$email','$lat','$lng','$dropdownValue_location','$dropdownValue_time','$username_db')";
+                            start(sqlquery);
                             _formKey.currentState.reset();
                             clearTextInput();
-                            Navigator.pop(context);
+                            //Navigator.pop(context);
+                            gotopage1_B();
+                            Navigator.pushReplacementNamed(
+                                context, B_MainPageTag);
                           }
                         },
                         child: Text('Submit'),
@@ -336,8 +453,9 @@ class _B_PostJob_formState extends State<B_PostJob_form> {
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: RaisedButton(
                         onPressed: () {
-                          // _formKey.currentState.reset();
-                          // clearTextInput();
+                          _formKey.currentState.reset();
+                          clearTextInput();
+                          //print(username_db);
                           /* Navigator.push(context,
                               MaterialPageRoute(builder: (context) =>  trytry_map(title:"haha")));*/
                         },
@@ -350,11 +468,24 @@ class _B_PostJob_formState extends State<B_PostJob_form> {
             )));
   }
 
+  Future start(String a) async {
+    String sqlquery = a;
+    final database = Postgre(
+      host: '10.0.2.2',
+      port: 5432,
+      user: 'postgres',
+      password: 'ocg123',
+      databaseName: 'appdb',
+    ).database();
+
+    await database.sqlClient.query(sqlquery).getIterator();
+  }
+
   void buttonPressed(BuildContext context, bool isPick) async {
     Prediction p =
-    await PlacesAutocomplete.show(context: context, apiKey: kGoogleApiKey);
+        await PlacesAutocomplete.show(context: context, apiKey: kGoogleApiKey);
     Future<PlacesDetailsResponse> placesDetailsResponse =
-    getPredictedLatLng(p, isPick);
+        getPredictedLatLng(p, isPick);
     placesDetailsResponse.then((detail) {
       var placeId = p.placeId;
       lat = detail.result.geometry.location.lat;

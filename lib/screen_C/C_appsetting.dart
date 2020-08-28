@@ -6,7 +6,8 @@ import 'package:appnewv1/screen_B/B_MainPage.dart';
 import 'package:appnewv1/screen_C/C_Login.dart';
 import 'package:appnewv1/helpers/constants_login.dart';
 import 'package:appnewv1/helpers/helperfunctions.dart';
-
+import 'package:appnewv1/screen_C/C_profile.dart';
+import 'dart:io';
 class C_appSetting extends StatefulWidget {
   @override
   _C_appSettingState createState() {
@@ -36,7 +37,7 @@ class _C_appSettingState extends State<C_appSetting> {
   }
 
   bool userIsLoggedIn;
-  bool LoggedInwFB=false;
+  bool LoggedInwFB;
   bool LoggedInwEmail;
 
 
@@ -75,14 +76,14 @@ class _C_appSettingState extends State<C_appSetting> {
     // change your state to refresh the screen
   }
 
-/*  _checkIfIsLogged() async {
-    final accessToken = await FacebookAuth.instance.isLogged;
-    if (accessToken != null) {
-      FacebookAuth.instance.getUserData().then((userData) {
-        setState(() => _userData = userData);
-      });
-    }
-  }*/
+//  _checkIfIsLogged() async {
+//    final accessToken = await FacebookAuth.instance.isLogged;
+//    if (accessToken != null) {
+//      FacebookAuth.instance.getUserData().then((userData) {
+//        setState(() => _userData = userData);
+//      });
+//    }
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +113,7 @@ class _C_appSettingState extends State<C_appSetting> {
                   divider_1(),
                   switch_list("切換成刊登模式 ", Icons.swap_horiz),
                   divider_1(),
-                  list_smt("問題回報與申訴 ", Icons.headset_mic),
+                  list_problem("問題回報與申訴 ", Icons.headset_mic),
                   divider_1(),
                   list_smt("合作提案 ", Icons.palette),
                   divider_1(),
@@ -153,7 +154,11 @@ class _C_appSettingState extends State<C_appSetting> {
         size: 15,
       ),
       onTap: () {
-        Navigator.of(context).pushNamed(C_profileTag);
+//        Navigator.of(context).pushNamed(C_profileTag);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => C_profile()),
+        ).then((value) => setState(() => {}));
       },
     )
         : ListTile(
@@ -171,7 +176,7 @@ class _C_appSettingState extends State<C_appSetting> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => C_login()),
-        ).then((res) => refreshPage());
+        ).then((value) => setState(() => {}));
       },
     );
   }
@@ -186,6 +191,22 @@ class _C_appSettingState extends State<C_appSetting> {
       title:
       Text(title, style: TextStyle(color: appDeepBlueColor, fontSize: 15)),
       dense: true,
+    );
+  }
+
+  Widget list_problem(String title, IconData a) {
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
+      leading: Icon(
+        a,
+        color: appGreyColor,
+      ),
+      title:
+      Text(title, style: TextStyle(color: appDeepBlueColor, fontSize: 15)),
+      dense: true,
+      onTap: (){
+        Navigator.of(context).pushNamed(problem_pageTag);
+      },
     );
   }
 
@@ -211,7 +232,7 @@ class _C_appSettingState extends State<C_appSetting> {
                 Navigator.pushReplacementNamed(context, C_MainPageTag);
                 _visible = false;
               }
-/*              if ((userIsLoggedIn != null && userIsLoggedIn == true && LoggedInwEmail ==false && LoggedInwFB==true)) {
+           /*   if ((userIsLoggedIn != null && userIsLoggedIn == true && LoggedInwEmail ==false && LoggedInwFB==true)) {
                 HelperFunctions.saveUserLoggedInSharedPreference(false);
                 AuthService().fb_signOut();
                 Navigator.pushReplacementNamed(context, C_MainPageTag);
@@ -240,18 +261,16 @@ class _C_appSettingState extends State<C_appSetting> {
   }
 
   Widget img_icon_profile() {
-    return Container(
-        width: 60.0,
-        height: 150.0,
-        decoration: new BoxDecoration(
-            shape: BoxShape.circle,
-            image: new DecorationImage(
-                fit: BoxFit.fill,
-                image:(userIsLoggedIn != null && userIsLoggedIn == true && LoggedInwEmail ==false && LoggedInwFB==true)
-                    ? new NetworkImage(
-                    fbIcon)//new NetworkImage(fbIcon)
-                    : new NetworkImage(
-                    "https://www.smartshanghai.com/img/placeholders/user-avatar.png"))));
+    return CircleAvatar(
+      backgroundColor: appBlueColor,
+      radius: MediaQuery
+          .of(context)
+          .size
+          .width / 13,
+      backgroundImage: (imageFile == null || userIsLoggedIn == false)
+          ? AssetImage("assets/images/icons/profile_icon.png")
+          : FileImage(File(imageFile.path)),
+    );
   }
 
   Widget divider_1() {

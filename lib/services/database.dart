@@ -140,4 +140,5 @@ class DatabaseMethods {
         .where('users', arrayContains: itIsMyName)
         .snapshots();
   }
+
 }

@@ -1,6 +1,7 @@
 import 'package:appnewv1/helpers/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:appnewv1/screen_C/C_MainPage.dart';
+import 'package:appnewv1/helpers/loading.dart';
 
 class HomePage extends StatelessWidget {
   @override

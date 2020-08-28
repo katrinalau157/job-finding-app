@@ -4,7 +4,7 @@ import 'helpers/Constants.dart';
 import 'package:flutter/material.dart';
 import 'services/auth.dart';
 import 'package:appnewv1/screen_C/C_MainPage.dart';
-
+import 'package:appnewv1/helpers/loading.dart';
 
 const double TextField_title_fontsize = 15;
 const double TextField_hint_fontsize = 14;
@@ -118,14 +118,17 @@ class _C_emailSignupState extends State<C_emailSignup> {
           }
         } else {
           setState(() {
+            controller.dispose();
             isLoading = false;
+
           });
         }
       });
     }
   }
+  loading() async{
 
-
+}
 
   @override
   Widget build(BuildContext context) {
@@ -139,9 +142,7 @@ class _C_emailSignupState extends State<C_emailSignup> {
         //backgroundColor: appBlueColor,
         body: isLoading
             ? Container(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ))
+            child: loadingPig())
             : SingleChildScrollView(
           child: Container(
             color: Colors.white,
@@ -328,3 +329,4 @@ class _C_emailSignupState extends State<C_emailSignup> {
     );
   }
 }
+

@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image_picker/image_picker.dart';
 
 class HelperFunctions {
   static String sharedPreferenceUserLoggedInKey = "ISLOGGEDIN";
@@ -82,40 +83,40 @@ class HelperFunctions {
     var min = difference.inMinutes;
     var second = difference.inSeconds;
 
-    print(DateTime.now().millisecondsSinceEpoch);
+    //print(DateTime.now().millisecondsSinceEpoch);
 
     if (day == 0 && hour < 0) {
-      print("3");
+      //print("3");
       String returnmsg = (0 - hour).toString() + " hours ago";
       return returnmsg;
     }
     if (day == 0 && hour > 0) {
-      print("4");
+      //print("4");
       String returnmsg = (hour).toString() + " hours ago";
       return returnmsg;
     }
     if (day == 0 && hour == 0 && min > 0) {
-      print("5");
+      //print("5");
       String returnmsg = (min).toString() + " mins ago";
       return returnmsg;
     }
 
     if (day > 0 && hour == 0 && min > 0) {
-      print("67");
+      //print("67");
       String returnmsg =
           (day).toString() + " days " + (min).toString() + " mins ago";
       return returnmsg;
     }
     if (day > 0 && hour > 0 && min > 0) {
       int new_hour = hour%24;
-      print("6");
+      //print("6");
       String returnmsg =
           (day).toString() + " days " + (new_hour).toString() + " hours ago";
       return returnmsg;
     }
 
     if (day == 0 && hour == 0 && min == 0 && second > 0) {
-      print("7");
+      //print("7");
       int new_second = second%60;
       String returnmsg = (new_second).toString() + " sec ago";
       return returnmsg;
@@ -123,8 +124,10 @@ class HelperFunctions {
 
     else {
       String returnmsg = "...";
-      print("haha");
+      //print("haha");
       return returnmsg;
     }
   }
+
+
 }

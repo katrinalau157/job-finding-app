@@ -81,11 +81,10 @@ class _ConversationScreenState extends State<ConversationScreen> {
         backgroundColor: appBlueColor,
       ),
       body: Container(
-        child: Stack(
+        child: Column(
           children: [
-            chatMessages(),
+            Expanded(child: Container(child: chatMessages())),
             Container(
-
                 alignment: Alignment.bottomCenter,
                 width: MediaQuery.of(context).size.width,
                 child:buildInput(context)
@@ -128,7 +127,6 @@ class _ConversationScreenState extends State<ConversationScreen> {
   Widget buildInput(BuildContext context) {
     return Container(
       child: Row(
-
         children: <Widget>[
           // Button send image
           Material(
@@ -188,15 +186,12 @@ class _ConversationScreenState extends State<ConversationScreen> {
         ],
       ),
       width: double.infinity,
-      height: MediaQuery.of(context).size.height/10,
+      height: MediaQuery.of(context).size.height/11,
       decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.grey[300], width: 0.5)), color: Colors.white),
     );
   }
 
 }
-
-
-
 
 class MessageTile extends StatelessWidget {
   final String message;
@@ -206,36 +201,38 @@ class MessageTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-          top: 8, bottom: 8, left: sendByMe ? 0 : 24, right: sendByMe ? 24 : 0),
-      alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
+    return SingleChildScrollView(
       child: Container(
-        margin:
-        sendByMe ? EdgeInsets.only(left: 30) : EdgeInsets.only(right: 30),
-        padding: EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
-        decoration: BoxDecoration(
-            borderRadius: sendByMe
-                ? BorderRadius.only(
-                topLeft: Radius.circular(23),
-                topRight: Radius.circular(23),
-                bottomLeft: Radius.circular(23))
-                : BorderRadius.only(
-                topLeft: Radius.circular(23),
-                topRight: Radius.circular(23),
-                bottomRight: Radius.circular(23)),
-            gradient: LinearGradient(
-              colors: sendByMe
-                  ? [appMintColor, appMintColor]
-                  : [Colors.grey[350], Colors.grey[350]],
-            )),
-        child: Text(message,
-            textAlign: TextAlign.start,
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-                fontFamily: 'OverpassRegular',
-                fontWeight: FontWeight.w300)),
+        padding: EdgeInsets.only(
+            top: 8, bottom: 8, left: sendByMe ? 0 : 24, right: sendByMe ? 24 : 0),
+        alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
+        child: Container(
+          margin:
+          sendByMe ? EdgeInsets.only(left: 30) : EdgeInsets.only(right: 30),
+          padding: EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
+          decoration: BoxDecoration(
+              borderRadius: sendByMe
+                  ? BorderRadius.only(
+                  topLeft: Radius.circular(23),
+                  topRight: Radius.circular(23),
+                  bottomLeft: Radius.circular(23))
+                  : BorderRadius.only(
+                  topLeft: Radius.circular(23),
+                  topRight: Radius.circular(23),
+                  bottomRight: Radius.circular(23)),
+              gradient: LinearGradient(
+                colors: sendByMe
+                    ? [appMintColor, appMintColor]
+                    : [Colors.grey[350], Colors.grey[350]],
+              )),
+          child: Text(message,
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontFamily: 'OverpassRegular',
+                  fontWeight: FontWeight.w300)),
+        ),
       ),
     );
   }

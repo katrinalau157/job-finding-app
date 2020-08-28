@@ -26,12 +26,19 @@ class _B_ChatState extends State<B_Chat> {
                   new Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 1000.0),
                   ),
-                  Text("chat",
-                      style: TextStyle(
-                          fontSize: 20.0,
-                          height: 1.5,
-                          color: appDeepBlueColor,
-                          fontWeight: FontWeight.bold)),
+                  Center(
+                    child: Column(children: [
+                      Image.asset(
+                        'assets/images/icons/pignojob.png',
+                        width: double.infinity,
+                      ),
+                      Text(
+                        "Chat",
+                        style:
+                        TextStyle(color: applightGreyColor, fontSize: 18),
+                      )
+                    ]),
+                  ),
                   new Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5.0),
                   ),

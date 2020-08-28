@@ -15,6 +15,9 @@ class buildJobDetail extends StatefulWidget {
   final int time;
   final double lat;
   final double lng;
+  final String email;
+  final String username_db;
+  final String timerange;
   buildJobDetail({
     this.job_title,
     this.job_salary_type,
@@ -25,6 +28,9 @@ class buildJobDetail extends StatefulWidget {
     this.time,
     this.lat,
     this.lng,
+    this.email,
+    this.username_db,
+    this.timerange,
   });
 
   _buildJobDetailState createState() => _buildJobDetailState();
@@ -34,7 +40,7 @@ class _buildJobDetailState extends State<buildJobDetail> {
   GoogleMapController mapController;
   // Initial location of the Map view
   CameraPosition _initialLocation =
-  CameraPosition(target: LatLng(22.27, 114.16), zoom: 15.0);
+  CameraPosition(target: LatLng(22.27, 114.16), zoom: 18.0);
   final Geolocator _geolocator = Geolocator();
 
 // For storing the current position
@@ -49,7 +55,7 @@ class _buildJobDetailState extends State<buildJobDetail> {
     mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target:
         LatLng(widget.lat, widget.lng),
-        zoom: 50.0)));
+        zoom: 60.0)));
 
     /* await _geolocator
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
@@ -130,11 +136,11 @@ class _buildJobDetailState extends State<buildJobDetail> {
               list("公司名稱", widget.company_name),
               list("打工內容", widget.job_detail),
               grey_list("打工資訊"),
-              list_detail("打工時間"),
+              list_detail("打工時間", widget.timerange),
               grey_list("應徵方式"),
-              list_detail2("聯絡人", "Kelvin", Icons.sentiment_satisfied),
-              list_detail2("電話", "Kelvin", Icons.phone),
-              list_detail2("E-mail", "Kelvin", Icons.mail_outline),
+              list_detail2("聯絡人", widget.username_db, Icons.sentiment_satisfied),
+              list_detail2("電話", " ", Icons.phone),
+              list_detail2("E-mail", widget.email, Icons.mail_outline),
             ]),
       ),
     );
@@ -204,7 +210,7 @@ class _buildJobDetailState extends State<buildJobDetail> {
     );
   }
 
-  Widget list_detail(String title) {
+  Widget list_detail(String title, String subttitle, ) {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
       leading: Icon(
@@ -213,7 +219,10 @@ class _buildJobDetailState extends State<buildJobDetail> {
         size: 25,
       ),
       title:
-      Text(title, style: TextStyle(color: appDeepBlueColor, fontSize: 15)),
+      Text(title, style: TextStyle(color: appGreyColor, fontSize: 15)),
+      subtitle: Text(subttitle,
+          style: TextStyle(color: appDeepBlueColor, fontSize: 15)),
+
       dense: true,
     );
   }

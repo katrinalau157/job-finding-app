@@ -1,11 +1,13 @@
 import 'package:appnewv1/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:database_adapter_postgre/database_adapter_postgre.dart';
 import 'helpers/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'helpers/helperfunctions.dart';
 import 'package:appnewv1/services/auth.dart';
 import 'package:appnewv1/screen_C/C_MainPage.dart';
+import 'package:appnewv1/helpers/loading.dart';
 
 const double TextField_title_fontsize = 15;
 const double TextField_hint_fontsize = 14;
@@ -45,27 +47,28 @@ class _C_emailSigninState extends State<C_emailSignin> {
 
       await authService
           .signInWithEmailAndPassword(
-          _emailController.text.trim().toLowerCase(), _passwordeController.text.trim().toLowerCase())
+              _emailController.text.trim().toLowerCase(),
+              _passwordeController.text.trim().toLowerCase())
           .then((result) async {
-        if (result != null)  {
+        if (result != null) {
           print(result);
           switch (result) {
             case "ERROR_INVALID_EMAIL":
-              errorMessage = "Your email address appears to be malformed.";
+              errorMessage = "Incorrect email or Password";
               setState(() {
                 errormsg = errorMessage;
                 isLoading = false;
               });
               break;
             case "ERROR_WRONG_PASSWORD":
-              errorMessage = "Your password is wrong.";
+              errorMessage = "Incorrect email or Password";
               setState(() {
                 errormsg = errorMessage;
                 isLoading = false;
               });
               break;
             case "ERROR_USER_NOT_FOUND":
-              errorMessage = "User with this email doesn't exist.";
+              errorMessage = "Incorrect email or Password";
               setState(() {
                 errormsg = errorMessage;
                 isLoading = false;
@@ -87,14 +90,14 @@ class _C_emailSigninState extends State<C_emailSignin> {
               break;
             case "ERROR_OPERATION_NOT_ALLOWED":
               errorMessage =
-              "Signing in with Email and Password is not enabled.";
+                  "Signing in with Email and Password is not enabled.";
               setState(() {
                 errormsg = errorMessage;
                 isLoading = false;
               });
               break;
             default:
-            //
+              //
 /*              String email = _emailController.text.toString();
              QuerySnapshot userInfoSnapshot =
              await DatabaseMethods().getUserInfo(email);
@@ -130,7 +133,6 @@ class _C_emailSigninState extends State<C_emailSignin> {
 
               set_selectedindex3_C();
               Navigator.pushReplacementNamed(context, C_MainPageTag);
-
           }
 
           /*QuerySnapshot userInfoSnapshot =
@@ -141,18 +143,59 @@ class _C_emailSigninState extends State<C_emailSignin> {
           HelperFunctions.saveUserNameSharedPreference(
               userInfoSnapshot.documents[0].data["name"]);
           HelperFunctions.saveUserEmailSharedPreference(
-              userInfoSnapshot.documents[0].data["email"]);*//*
+              userInfoSnapshot.documents[0].data["email"]);*/ /*
 
           set_selectedindex3_C();
           Navigator.pushReplacementNamed(context, C_MainPageTag);*/
         } else {
           setState(() {
+            dispose();
             isLoading = false;
+
           });
         }
       });
     }
   }
+///Postgre
+/*
+  final database = Postgre(
+    host: '10.0.2.2',
+    port: 5432,
+    user: 'postgres',
+    password: 'ocg123',
+    databaseName: 'appdb',
+  ).database();
+*/
+
+/*  login() async {
+    if (_formKey.currentState.validate()) {
+      setState(() {
+        isLoading = true;
+      });
+      String _email = _emailController.text.trim().toString().toLowerCase();
+      String _pw = _passwordeController.text.trim();
+
+      final loginresult = await database.sqlClient
+          .query(
+              "SELECT email,password,username FROM users WHERE email='$_email' AND password='$_pw'")
+          .toMaps();
+
+
+
+      if (loginresult.length == 1) {
+
+        HelperFunctions.saveUserLoggedInSharedPreference(true);
+//        HelperFunctions.saveUserNameSharedPreference();
+        HelperFunctions.saveUserEmailSharedPreference(_email);
+        HelperFunctions.saveUserLoggedInEmail(true);
+        HelperFunctions.saveUserLoggedInFB(false);
+        //
+        set_selectedindex3_C();
+        Navigator.pushReplacementNamed(context, C_MainPageTag);
+      }
+    }
+  }*/
 
   void initState() {
     errormsg = '';
@@ -171,106 +214,106 @@ class _C_emailSigninState extends State<C_emailSignin> {
         backgroundColor: appBlueColor,
         body: isLoading
             ? Container(
-          child: Center(child: CircularProgressIndicator()),
-        )
+                child: loadingPig(),
+              )
             : ClipPath(
-          clipper: WaveClipperTwo(reverse: true),
-          child: Container(
-            color: Colors.white,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: SingleChildScrollView(
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                child: Text(errormsg,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.red)),
-                              ),
-                              _space(),
-                              Container(
-                                alignment: Alignment.center,
-                                child: Text("Sign In",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: appDeepBlueColor)),
-                              ),
-                              _space(),
+                clipper: WaveClipperTwo(reverse: true),
+                child: Container(
+                  color: Colors.white,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: SingleChildScrollView(
+                              child: Form(
+                                key: _formKey,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Container(
+                                      child: Text(errormsg,
+                                          style: TextStyle(
+                                              fontSize: 16, color: Colors.red)),
+                                    ),
+                                    _space(),
+                                    Container(
+                                      alignment: Alignment.center,
+                                      child: Text("Sign In",
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: appDeepBlueColor)),
+                                    ),
+                                    _space(),
 
-                              //1
-                              txtfieldtitle("email"),
-                              textformfield1(_emailController, "email",
-                                  'Please enter some text'),
-                              _space(),
+                                    //1
+                                    txtfieldtitle("email"),
+                                    textformfield1(_emailController, "email",
+                                        'Please enter some text'),
+                                    _space(),
 
-                              //2
-                              txtfieldtitle("password"),
-                              textformfield2(_passwordeController,
-                                  "password", 'Please enter some text'),
-                              _space(),
-                              Container(
-                                alignment: Alignment.centerRight,
-                                child: Text("Forgot Password?"),
-                              ),
+                                    //2
+                                    txtfieldtitle("password"),
+                                    textformfield2(_passwordeController,
+                                        "password", 'Please enter some text'),
+                                    _space(),
+                                    Container(
+                                      alignment: Alignment.centerRight,
+                                      child: Text("Forgot Password?"),
+                                    ),
 
-                              //signin button
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 16.0),
-                                child: RaisedButton(
-                                  onPressed: () {
-                                    // Validate will return true if the form is valid, or false if
-                                    // the form is invalid.
-                                    if (_formKey.currentState
-                                        .validate()) {
-                                      signIn();
-                                    }
-                                  },
-                                  child: Text('Signin'),
+                                    //signin button
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16.0),
+                                      child: RaisedButton(
+                                        onPressed: () {
+                                          // Validate will return true if the form is valid, or false if
+                                          // the form is invalid.
+                                          if (_formKey.currentState
+                                              .validate()) {
+                                            signIn();
+                                          }
+                                        },
+                                        child: Text('Signin'),
+                                      ),
+                                    ),
+
+                                    //Don't have account?
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          "Don't have account? ",
+                                        ),
+                                        new GestureDetector(
+                                          onTap: () {
+                                            widget.toggle();
+                                          },
+                                          child: new Text(
+                                            "Register now",
+                                            style: TextStyle(
+                                                decoration:
+                                                    TextDecoration.underline),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
-
-                              //Don't have account?
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    "Don't have account? ",
-                                  ),
-                                  new GestureDetector(
-                                    onTap: () {
-                                      widget.toggle();
-                                    },
-                                    child: new Text(
-                                      "Register now",
-                                      style: TextStyle(
-                                          decoration:
-                                          TextDecoration.underline),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ))
-                ]),
-          ),
-        ));
+                            ))
+                      ]),
+                ),
+              ));
   }
 
   Widget textformfield1(TextEditingController textcontroller, String hinttxt,
       String validator_str) {
     return TextFormField(
+
       controller: textcontroller,
       decoration: InputDecoration(
         hintText: hinttxt,
@@ -286,8 +329,8 @@ class _C_emailSigninState extends State<C_emailSignin> {
           return validator_str;
         } else {
           return RegExp(
-              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-              .hasMatch(value)
+                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                  .hasMatch(value)
               ? null
               : "Please Enter Correct Email";
         }
@@ -327,7 +370,7 @@ class _C_emailSigninState extends State<C_emailSignin> {
             style: TextStyle(
               color: appGreenBlueColor,
               fontSize:
-              TextField_title_fontsize, //You can set your custom height here
+                  TextField_title_fontsize, //You can set your custom height here
             )),
       ),
     );

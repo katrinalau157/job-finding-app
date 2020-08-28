@@ -37,6 +37,11 @@ dependencies:
   google_maps_flutter: ^0.5.29
   geolocator: ^5.3.2+2
   firebase_auth: ^0.16.1
+  database: any
+  database_adapter_postgre: any
+  image_picker: ^0.6.7+6
+  gzx_dropdown_menu: ^2.1.0
+  carousel_slider: ^2.2.1
 
 dev_dependencies:
   flutter_test:
@@ -92,3 +97,6 @@ flutter:
     - assets/images/icons/firstPage_pig1.PNG
     - assets/images/icons/pig2.png
     - assets/images/icons/banner.png
+    - assets/images/icons/profile_icon.png
+    - assets/images/icons/pngwave.png
+    - assets/images/icons/pignojob.png

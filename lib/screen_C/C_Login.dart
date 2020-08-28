@@ -2,7 +2,7 @@ import 'package:appnewv1/helpers/Constants.dart';
 import 'package:appnewv1/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 import 'package:appnewv1/screen_C/C_MainPage.dart';
@@ -22,9 +22,7 @@ class _C_loginState extends State<C_login> {
     super.initState();
   }
 
-
-/*
-  _login() async {
+/*  _login() async {
     final result = await FacebookAuth.instance.login();
     switch (result.status) {
       case FacebookAuthLoginResponse.ok:
@@ -65,16 +63,26 @@ class _C_loginState extends State<C_login> {
   _logOut() async {
     await FacebookAuth.instance.logOut();
     setState(() => _userData = null);
-  }
-*/
-
+  }*/
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar:
+/*      AppBar(
         title: Text('Sign in with Facebook'),
         backgroundColor: appBlueColor,
+
+      ),*/
+          AppBar(
+        backgroundColor: appBlueColor,
+        leading: new IconButton(
+            icon: new Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop()),
+        title: Text(
+          "Sign in",
+          style: TextStyle(fontSize: 20.0, color: appWhiteColor),
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -113,56 +121,58 @@ class _C_loginState extends State<C_login> {
                     )
                   ],
                 )*/
+              Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Loading...",
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center),
+                )
+              :
+          /*Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("請選擇登入方式",
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.center),
+                )*/
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text("Loading...",
-                style:
-                TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center),
-          )
-              : Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-                "Please select a login method ",
-                style:
-                TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center),
+
+            child: Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/icons/pignojob.png',
+                      width: double.infinity,
+                    ),
+                    Text(
+                      "請選擇登入方式",
+                      style:
+                      TextStyle(color: appGreyColor, fontSize: 18),
+                    ),
+                    FlatButton.icon(
+
+                      icon: Icon(Icons.email),
+                      padding: EdgeInsets.all(16),
+                      textColor: Colors.white,
+                      color: applightGreyColor,
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(context, C_emailSigninTag);
+                      },
+                      label: Text(
+                        'email 登入',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    )
+                  ]),
+            ),
+
           ),
 
-/*          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: FlatButton.icon(
-                icon: Icon(Icons.sentiment_satisfied),
-                padding: EdgeInsets.all(16),
-                textColor: Colors.white,
-                color: _userData != null ? Colors.black : Colors.blue[800],
-                onPressed: () => _userData != null ? _logOut() : _login(),
-                label: Text(
-                  _userData != null ? 'Log Out' : 'Facebook Log In',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-            ),
-          ),
-          */
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: FlatButton.icon(
-                icon: Icon(Icons.email),
-                padding: EdgeInsets.all(16),
-                textColor: Colors.white,
-                color: (userIsLoggedIn != null && userIsLoggedIn == true) ? Colors.black : Colors.grey[500],
-                onPressed: () {Navigator.pushReplacementNamed(context, C_emailSigninTag);
-                },
-                label: Text(
-                  (userIsLoggedIn != null && userIsLoggedIn == true)? 'Already login with facebook' : 'Email Log In',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-            ),
-          )
         ],
       ),
     );
